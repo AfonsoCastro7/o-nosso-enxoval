@@ -31,17 +31,28 @@ export function ProductForm({
   submitLabel = "Guardar produto",
 }: {
   initial?: Product;
-  onSubmit: (input: ProductInput) => void;
+  onSubmit: (input: ProductInput) => Promise<void>;
   submitLabel?: string;
 }) {
   const [form, setForm] = useState<ProductInput>(
     initial ? { ...initial } : empty,
   );
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState("");
   const set = <K extends keyof ProductInput>(key: K, value: ProductInput[K]) =>
     setForm((old) => ({ ...old, [key]: value }));
-  const submit = (event: FormEvent) => {
+  const submit = async (event: FormEvent) => {
     event.preventDefault();
-    onSubmit(form);
+    setSaving(true);
+    setError("");
+    try {
+      await onSubmit(form);
+    } catch (submitError) {
+      console.error("Falha ao submeter produto:", submitError);
+      setError(submitError instanceof Error ? submitError.message : "Não foi possível guardar o produto.");
+    } finally {
+      setSaving(false);
+    }
   };
   return (
     <form onSubmit={submit} className="space-y-7">
@@ -194,9 +205,10 @@ export function ProductForm({
           placeholder="Medidas, cor, referências…"
         />
       </label>
-      <button className="button-primary w-full" type="submit">
+      {error && <p className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700" role="alert">{error}</p>}
+      <button disabled={saving} className="button-primary w-full disabled:opacity-60" type="submit">
         <Save size={18} />
-        {submitLabel}
+        {saving ? "A guardar…" : submitLabel}
       </button>
     </form>
   );

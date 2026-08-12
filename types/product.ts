@@ -8,6 +8,7 @@ export interface Product {
   category: string;
   status: ProductStatus;
   image?: string;
+  imagePath?: string;
   price?: number;
   targetPrice?: number;
   store?: string;

@@ -9,6 +9,7 @@ export function Dashboard() {
   const { products, budget, ready, changeBudget } = useProducts();
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState("");
+  const [budgetError, setBudgetError] = useState("");
   if (!ready) return <LoadingState />;
   const bought = products.filter((p) => p.status === "bought");
   const wishlist = products.filter((p) => p.status === "wishlist");
@@ -20,11 +21,17 @@ export function Dashboard() {
     { label: "Desejos", value: String(wishlist.length), icon: Heart },
     { label: "Total", value: String(products.length), icon: Package },
   ];
-  const save = () => {
+  const save = async () => {
     const value = Number(draft);
     if (value > 0) {
-      changeBudget(value);
-      setEditing(false);
+      setBudgetError("");
+      try {
+        await changeBudget(value);
+        setEditing(false);
+      } catch (saveError) {
+        console.error(saveError);
+        setBudgetError("Não foi possível guardar o orçamento.");
+      }
     }
   };
   return (
@@ -85,23 +92,26 @@ export function Dashboard() {
             </div>
           </>
         ) : editing ? (
-          <div className="mt-5 flex gap-2">
-            <input
-              autoFocus
-              className="!border-[#D9D0C7] !bg-white/70 !text-slate-900"
-              type="number"
-              min="1"
-              value={draft}
-              onChange={(e) => setDraft(e.target.value)}
-              placeholder="5000"
-            />
-            <button
-              onClick={save}
-              className="rounded-xl bg-teal-700 px-5 font-semibold text-white"
-            >
-              Guardar
-            </button>
-          </div>
+          <>
+            <div className="mt-5 flex gap-2">
+              <input
+                autoFocus
+                className="!border-[#D9D0C7] !bg-white/70 !text-slate-900"
+                type="number"
+                min="1"
+                value={draft}
+                onChange={(e) => setDraft(e.target.value)}
+                placeholder="5000"
+              />
+              <button
+                onClick={() => void save()}
+                className="rounded-xl bg-teal-700 px-5 font-semibold text-white"
+              >
+                Guardar
+              </button>
+            </div>
+            {budgetError && <p className="mt-3 text-sm text-red-700">{budgetError}</p>}
+          </>
         ) : (
           <button
             className="mt-5 rounded-xl bg-white px-4 py-3 text-sm font-semibold text-slate-900"
