@@ -7,7 +7,7 @@ import { formatCurrency, formatDate } from "@/lib/format";
 import type { Product } from "@/types/product";
 export function ProductCard({ product }: { product: Product }) {
   return (
-    <article className="card group overflow-hidden p-3 transition hover:-translate-y-0.5 hover:shadow-md">
+    <article className="card group w-full min-w-0 max-w-full overflow-hidden p-3 transition hover:-translate-y-0.5 hover:shadow-md">
       <Link href={`/produtos/${product.id}`} className="block min-w-0 max-w-full">
         <div className="flex min-w-0 gap-4">
         <div className="flex h-24 w-24 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-slate-100 text-slate-400">
@@ -18,22 +18,22 @@ export function ProductCard({ product }: { product: Product }) {
               width={96}
               height={96}
               unoptimized
-              className="h-full w-full object-cover"
+              className="h-full w-full max-w-full object-cover"
             />
           ) : (
             <ImageIcon size={25} />
           )}
         </div>
         <div className="min-w-0 flex-1 py-1">
-          <div className="flex items-start justify-between gap-2">
-            <h2 className="truncate font-semibold text-slate-900">
+          <div className="grid min-w-0 grid-cols-[minmax(0,1fr)_auto] items-start gap-2">
+            <h2 className="min-w-0 truncate font-semibold text-slate-900">
               {product.name}
             </h2>
-            <span className="shrink-0 font-semibold text-slate-900">
+            <span className="max-w-full font-semibold text-slate-900">
               {formatCurrency(product.price)}
             </span>
           </div>
-          <div className="mt-2 flex flex-wrap gap-1.5">
+          <div className="mt-2 flex min-w-0 max-w-full flex-wrap gap-1.5">
             <CategoryBadge category={product.category} />
             <PriorityBadge
               priority={
@@ -46,12 +46,12 @@ export function ProductCard({ product }: { product: Product }) {
               Objetivo: {formatCurrency(product.targetPrice)}
             </p>
           )}
-          <div className="mt-2 flex flex-wrap items-center gap-x-3 text-xs text-slate-500">
+          <div className="mt-2 flex min-w-0 max-w-full flex-wrap items-center gap-x-3 text-xs text-slate-500">
             {product.quantity > 1 && <span>{product.quantity} unidades</span>}
             {product.store && (
-              <span className="flex min-w-0 items-center gap-1">
+              <span className="flex min-w-0 max-w-full items-center gap-1 break-all">
                 <Store className="shrink-0" size={12} />
-                <span className="min-w-0 break-words">{product.store}</span>
+                <span className="min-w-0 break-all">{product.store}</span>
               </span>
             )}
             {product.purchaseDate && (
