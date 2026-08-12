@@ -21,7 +21,7 @@ export function PageHeader({
           <ArrowLeft size={20} />
         </Link>
       )}
-      <h1 className="text-3xl font-bold tracking-tight text-slate-900">
+      <h1 className="break-words text-3xl font-bold tracking-tight text-slate-900">
         {title}
       </h1>
       {subtitle && (

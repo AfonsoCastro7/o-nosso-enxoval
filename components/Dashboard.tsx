@@ -13,7 +13,7 @@ export function Dashboard() {
   if (!ready) return <LoadingState />;
   const bought = products.filter((p) => p.status === "bought");
   const wishlist = products.filter((p) => p.status === "wishlist");
-  const spent = bought.reduce((s, p) => s + (p.price ?? 0) * p.quantity, 0);
+  const spent = bought.reduce((s, p) => s + (p.price ?? 0), 0);
   const percent = budget ? Math.min(100, (spent / budget) * 100) : 0;
   const stats = [
     { label: "Total gasto", value: formatCurrency(spent), icon: Wallet },
@@ -129,14 +129,14 @@ export function Dashboard() {
             if (!items.length) return null;
             const total = items
               .filter((p) => p.status === "bought")
-              .reduce((s, p) => s + (p.price ?? 0) * p.quantity, 0);
+              .reduce((s, p) => s + (p.price ?? 0), 0);
             const Icon = category.icon;
             return (
-              <div key={category.name} className="flex items-center gap-3 py-4">
+              <div key={category.name} className="flex min-w-0 items-center gap-3 py-4">
                 <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-teal-50 text-teal-700">
                   <Icon size={19} />
                 </div>
-                <div className="flex-1">
+                <div className="min-w-0 flex-1">
                   <p className="font-semibold text-slate-800">
                     {category.name}
                   </p>

@@ -31,7 +31,7 @@ export function ProductList({ status }: { status: ProductStatus }) {
     [all, query, category, priority],
   );
   const bought = status === "bought";
-  const total = all.reduce((sum, p) => sum + (p.price ?? 0) * p.quantity, 0);
+  const total = all.reduce((sum, p) => sum + (p.price ?? 0), 0);
   if (!ready) return <LoadingState />;
   return (
     <>

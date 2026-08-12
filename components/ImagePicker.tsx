@@ -1,7 +1,8 @@
 "use client";
 import { Camera, ImagePlus, X } from "lucide-react";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
+import { ConfirmDialog } from "@/components/ConfirmDialog";
 
 async function compress(file: File): Promise<string> {
   const source = await createImageBitmap(file);
@@ -22,6 +23,7 @@ export function ImagePicker({
 }) {
   const gallery = useRef<HTMLInputElement>(null);
   const camera = useRef<HTMLInputElement>(null);
+  const [removeDialogOpen, setRemoveDialogOpen] = useState(false);
   const pick = async (file?: File) => {
     if (file) onChange(await compress(file));
   };
@@ -39,7 +41,7 @@ export function ImagePicker({
           />
           <button
             type="button"
-            onClick={() => onChange(undefined)}
+            onClick={() => setRemoveDialogOpen(true)}
             className="absolute right-3 top-3 flex h-10 w-10 items-center justify-center rounded-full bg-white/90 text-slate-700 shadow"
             aria-label="Remover foto"
           >
@@ -80,6 +82,18 @@ export function ImagePicker({
         accept="image/*"
         capture="environment"
         onChange={(e) => void pick(e.target.files?.[0])}
+      />
+      <ConfirmDialog
+        open={removeDialogOpen}
+        title="Remover fotografia?"
+        description="A fotografia deixará de estar associada ao produto quando guardares as alterações."
+        confirmLabel="Remover"
+        destructive
+        onCancel={() => setRemoveDialogOpen(false)}
+        onConfirm={() => {
+          onChange(undefined);
+          setRemoveDialogOpen(false);
+        }}
       />
     </div>
   );

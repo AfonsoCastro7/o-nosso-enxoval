@@ -95,7 +95,7 @@ export function ProductForm({
           />
         </label>
         <div className="grid grid-cols-2 gap-4">
-          <label>
+          <label className="min-w-0">
             <span className="label">Divisão *</span>
             <select
               required
@@ -108,7 +108,7 @@ export function ProductForm({
               ))}
             </select>
           </label>
-          <label>
+          <label className="min-w-0">
             <span className="label">Quantidade</span>
             <input
               required
@@ -124,9 +124,11 @@ export function ProductForm({
       </div>
       <div className="form-section">
         <div className="grid grid-cols-2 gap-4">
-          <label>
+          <label className="min-w-0">
             <span className="label">
-              {form.status === "bought" ? "Preço pago" : "Preço atual"}
+              {form.status === "bought"
+                ? "Preço total pago"
+                : "Preço atual total"}
             </span>
             <input
               min="0"
@@ -137,9 +139,12 @@ export function ProductForm({
               onChange={(e) => set("price", numeric(e.target.value))}
               placeholder="0,00"
             />
+            <span className="mt-1.5 block text-xs leading-5 text-slate-500">
+              Valor total, independentemente da quantidade.
+            </span>
           </label>
           {form.status === "bought" ? (
-            <label>
+            <label className="min-w-0">
               <span className="label">Data da compra</span>
               <input
                 type="date"
@@ -148,7 +153,7 @@ export function ProductForm({
               />
             </label>
           ) : (
-            <label>
+            <label className="min-w-0">
               <span className="label">Preço alvo</span>
               <input
                 min="0"

@@ -8,8 +8,8 @@ import type { Product } from "@/types/product";
 export function ProductCard({ product }: { product: Product }) {
   return (
     <article className="card group overflow-hidden p-3 transition hover:-translate-y-0.5 hover:shadow-md">
-      <Link href={`/produtos/${product.id}`} className="block">
-        <div className="flex gap-4">
+      <Link href={`/produtos/${product.id}`} className="block min-w-0 max-w-full">
+        <div className="flex min-w-0 gap-4">
         <div className="flex h-24 w-24 shrink-0 items-center justify-center overflow-hidden rounded-2xl bg-slate-100 text-slate-400">
           {product.image ? (
             <Image
@@ -49,9 +49,9 @@ export function ProductCard({ product }: { product: Product }) {
           <div className="mt-2 flex flex-wrap items-center gap-x-3 text-xs text-slate-500">
             {product.quantity > 1 && <span>{product.quantity} unidades</span>}
             {product.store && (
-              <span className="flex items-center gap-1">
-                <Store size={12} />
-                {product.store}
+              <span className="flex min-w-0 items-center gap-1">
+                <Store className="shrink-0" size={12} />
+                <span className="min-w-0 break-words">{product.store}</span>
               </span>
             )}
             {product.purchaseDate && (
